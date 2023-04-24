@@ -1,0 +1,16 @@
+image: docker:latest
+
+services:
+  - docker:dind
+
+variables:
+  DOCKER_TLS_CERTDIR: ""
+
+before_script:
+  - apk update && apk add --no-cache make
+  - docker info
+
+build:
+  stage: build
+  script:
+    make build
