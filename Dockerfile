@@ -1,4 +1,4 @@
-FROM debian:9 AS build-nginx
+FROM debian:11 AS build-nginx
 
 RUN apt update && apt -yq install wget gcc make libpcre3-dev zlib1g-dev
 
@@ -28,9 +28,25 @@ RUN wget http://nginx.org/download/nginx-1.24.0.tar.gz && \
     make install
 
 
-FROM debian:9
+FROM debian:11
 
-RUN apt update && apt -yq install libluajit-5.1-2
+RUN apt update && apt -yq install libluajit-5.1-2 wget gcc make
+
+RUN wget https://github.com/LuaJIT/LuaJIT/archive/refs/tags/v2.0.5.tar.gz && \
+    tar xvfz v2.0.5.tar.gz && \
+    cd LuaJIT-2.0.5 && \
+    make && \
+    make install
+
+RUN wget https://github.com/openresty/lua-resty-core/archive/refs/tags/v0.1.26.tar.gz && \
+    tar xvfz v0.1.26.tar.gz && \
+    cd lua-resty-core-0.1.26 && \
+    make install PREFIX=/opt/nginx
+
+RUN wget https://github.com/openresty/lua-resty-lrucache/archive/refs/tags/v0.13.tar.gz && \
+    tar xvfz v0.13.tar.gz && \
+    cd lua-resty-lrucache-0.13 && \
+    make install PREFIX=/opt/nginx
 
 ENV NGINX_PATH=/usr/local/nginx/sbin
 ENV PATH=${NGINX_PATH}:$PATH
