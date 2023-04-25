@@ -1,4 +1,4 @@
-image: docker:latest
+image: docker:23.0.4-dind
 
 services:
   - docker:dind
