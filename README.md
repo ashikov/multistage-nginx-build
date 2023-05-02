@@ -1,4 +1,4 @@
-# Nginx JOPA Build
+# Multistage Nginx Build
 
 ```bash
 make build
